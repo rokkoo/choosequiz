@@ -9,8 +9,14 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import styles from './styles';
+import Toast from './src/components/Toast';
 
-const quesitons = ['I love cheese', 'Like dogs', 'I like cats'];
+const quesitons = [
+  'I love cheese',
+  'Like dogs',
+  'I like cats',
+  'a very loooonggg text to test :)',
+];
 
 export default function AnimatedStyleUpdateExample() {
   const x = useSharedValue(0);
@@ -46,17 +52,17 @@ export default function AnimatedStyleUpdateExample() {
   });
 
   const animatedBackgroundColorStyle = useAnimatedStyle(() => {
-    let color = 'tomato';
+    let color = '#273746';
 
     if (!release.value) {
       // Give 10 pixels of gap between the edges of the text
       const gap = 10;
 
       if (x.value < -gap) {
-        color = 'green';
+        color = '#2ECC71';
       }
       if (x.value > gap) {
-        color = 'red';
+        color = '#E74C3C';
       }
     }
 
@@ -87,6 +93,7 @@ export default function AnimatedStyleUpdateExample() {
 
   return (
     <Animated.View style={[styles.container, animatedBackgroundColorStyle]}>
+      <Toast />
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={styles.quesitonTextContainer}>
           <Animated.Text style={[styles.quesitonText, animatesTextStyle]}>
