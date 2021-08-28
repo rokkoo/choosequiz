@@ -1,7 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Toast = ({ text }) => {
+interface ToastProps {
+  text: string;
+}
+
+const Toast = ({ text }: ToastProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
