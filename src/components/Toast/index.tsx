@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Toast = () => {
+const Toast = ({ text }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Pregunta hecha por</Text>
-      <Text style={[styles.text, styles.fromText]}>Alfonso</Text>
+      <Text style={styles.text}>{text}</Text>
+      {/* <Text style={[styles.text, styles.fromText]}>Alfonso</Text> */}
     </View>
   );
 };
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#5DADE2',
-    padding: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 5,
     justifyContent: 'center',
     alignSelf: 'center',
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
 
   text: {
     fontWeight: 'bold',
-    color: '#273746',
+    color: '#F7F9F9',
+    fontSize: 32,
   },
   fromText: {
     color: '#8E44AD',

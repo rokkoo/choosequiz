@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Animated, {
   useSharedValue,
   useDerivedValue,
@@ -9,21 +9,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import styles from './styles';
+
 import Toast from './src/components/Toast';
 
-const quesitons = [
-  'I love cheese',
-  'Like dogs',
-  'I like cats',
-  'a very loooonggg text to test :)',
-];
+const gap = 10;
 
 export default function AnimatedStyleUpdateExample() {
   const x = useSharedValue(0);
   const release = useSharedValue(true);
   const next = useSharedValue(false);
 
-  const [question, setQuestion] = useState(quesitons[0]);
+  const [newNumbers, setNewNumbers] = useState(false);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
@@ -42,7 +40,7 @@ export default function AnimatedStyleUpdateExample() {
       x.value = ctx.startX + event.translationX;
     },
     onEnd: (_) => {
-      if (x.value < -10 || x.value > 10) {
+      if (x.value < -gap || x.value > gap) {
         next.value = true;
       }
 
@@ -56,7 +54,6 @@ export default function AnimatedStyleUpdateExample() {
 
     if (!release.value) {
       // Give 10 pixels of gap between the edges of the text
-      const gap = 10;
 
       if (x.value < -gap) {
         color = '#2ECC71';
@@ -81,23 +78,60 @@ export default function AnimatedStyleUpdateExample() {
     };
   });
 
+  const ramdomNumberA = useMemo(() => {
+    setNewNumbers(false);
+
+    return Math.floor(Math.random() * 10);
+  }, [newNumbers]);
+
+  const ramdomNumberB = useMemo(
+    () => Math.floor(Math.random() * 10),
+    [newNumbers]
+  );
+  const ramdomResult = useMemo(
+    () => Math.floor(Math.random() * ramdomNumberB) + ramdomNumberA,
+    [ramdomNumberA, ramdomNumberB]
+  );
+  const correctAnswer = useMemo(
+    () => ramdomNumberA + ramdomNumberB,
+    [ramdomNumberA, ramdomNumberB]
+  );
+
+  const answer = useDerivedValue(() => {
+    return x.value < -gap;
+  });
+
+  const isCorrectAnswer = useDerivedValue(() => {
+    const showedresult = ramdomResult === correctAnswer;
+
+    return showedresult === answer.value;
+  }, [correctAnswer, ramdomResult]);
+
+  const showAlert = useCallback(() => {
+    if (isCorrectAnswer.value) {
+      setNewNumbers(true);
+      setCorrectAnswers((prev) => prev + 1);
+    } else {
+      setWrongAnswers((prev) => prev + 1);
+    }
+  }, [isCorrectAnswer]);
+
   useDerivedValue(() => {
     if (next.value && release.value) {
       next.value = false;
 
-      return runOnJS(setQuestion)(
-        quesitons[Math.floor(Math.random() * quesitons.length) + 0]
-      );
+      runOnJS(showAlert)();
     }
   });
 
   return (
     <Animated.View style={[styles.container, animatedBackgroundColorStyle]}>
-      <Toast />
+      <Toast text={`${ramdomNumberA}+${ramdomNumberB}`} />
+      <Toast text={`${correctAnswers} | ${wrongAnswers}`} />
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={styles.quesitonTextContainer}>
           <Animated.Text style={[styles.quesitonText, animatesTextStyle]}>
-            {question}
+            {ramdomResult}
           </Animated.Text>
         </Animated.View>
       </PanGestureHandler>
