@@ -130,9 +130,9 @@ export default function AnimatedStyleUpdateExample() {
   return (
     <Animated.View style={[styles.container, animatedBackgroundColorStyle]}>
       <View style={styles.header}>
-        <Points text={correctAnswers.toString()} color={'green'} />
+        <Points text={correctAnswers.toString()} color={'#2ECC71'} />
         <Toast text={`${ramdomNumberA}+${ramdomNumberB}`} />
-        <Points text={wrongAnswers.toString()} color={'red'} />
+        <Points text={wrongAnswers.toString()} color={'#E74C3C'} />
       </View>
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View style={styles.quesitonTextContainer}>

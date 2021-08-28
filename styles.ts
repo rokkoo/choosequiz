@@ -7,13 +7,25 @@ export default StyleSheet.create({
     backgroundColor: 'tomato',
     flex: 1,
     flexDirection: 'column',
-    paddingTop: 60,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 24,
+    backgroundColor: 'white',
+    paddingTop: 60,
+    paddingBottom: 16,
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 
   quesitonTextContainer: {

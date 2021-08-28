@@ -17,7 +17,7 @@ const Toast = ({ text }: ToastProps) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#5DADE2',
+    backgroundColor: '#34495E',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 5,
